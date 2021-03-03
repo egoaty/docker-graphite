@@ -56,8 +56,8 @@ services:
   graphite:
     image: egoaty/graphite
     environment:
-      - PUID='1234'
-      - PUID='1234'
+      - PUID=1234
+      - PUID=1234
       - TZ='Europe/Vienna'
     networks:
       my_network:
