@@ -21,7 +21,7 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ.get('GRAPHITE_ALLOWED_HOSTS
 # Set your local timezone (Django's default is America/Chicago)
 # If your graphs appear to be offset by a couple hours then this probably
 # needs to be explicitly set to your local timezone.
-TIME_ZONE = os.environ.get('GRAPHITE_TIME_ZONE', 'Etc/UTC')
+TIME_ZONE = os.environ.get('TZ', 'Etc/UTC')
 
 # Set the default short date format. See strftime(3) for supported sequences.
 DATE_FORMAT = os.environ.get('GRAPHITE_DATE_FORMAT', '%m/%d')
@@ -32,10 +32,10 @@ DATE_FORMAT = os.environ.get('GRAPHITE_DATE_FORMAT', '%m/%d')
 # Logging
 # These can also be configured using Django's LOGGING:
 # https://docs.djangoproject.com/en/1.11/topics/logging/
-LOG_ROTATION = os.environ.get("GRAPHITE_LOG_ROTATION", "false").lower() in ['1', 'true', 'yes']
-LOG_ROTATION_COUNT = int(os.environ.get('GRAPHITE_LOG_ROTATION_COUNT', '1'))
-LOG_RENDERING_PERFORMANCE = os.environ.get("GRAPHITE_LOG_RENDERING_PERFORMANCE", "true").lower() in ['1', 'true', 'yes']
-LOG_CACHE_PERFORMANCE = os.environ.get("GRAPHITE_LOG_CACHE_PERFORMANCE", "true").lower() in ['1', 'true', 'yes']
+#LOG_ROTATION = os.environ.get("GRAPHITE_LOG_ROTATION", "false").lower() in ['1', 'true', 'yes']
+#LOG_ROTATION_COUNT = int(os.environ.get('GRAPHITE_LOG_ROTATION_COUNT', '1'))
+#LOG_RENDERING_PERFORMANCE = os.environ.get("GRAPHITE_LOG_RENDERING_PERFORMANCE", "true").lower() in ['1', 'true', 'yes']
+#LOG_CACHE_PERFORMANCE = os.environ.get("GRAPHITE_LOG_CACHE_PERFORMANCE", "true").lower() in ['1', 'true', 'yes']
 
 # Filenames for log output, set to '-' to log to stderr
 LOG_FILE_INFO = os.environ.get("GRAPHITE_LOG_FILE_INFO", '-')
@@ -65,7 +65,7 @@ LOG_FILE_RENDERING = os.environ.get("GRAPHITE_LOG_FILE_RENDERING", '-')
 # to the cache duration for the results. This allows for larger queries to be
 # cached for longer periods of times. All times are in seconds. If the policy is
 # empty or undefined, all results will be cached for DEFAULT_CACHE_DURATION.
-DEFAULT_CACHE_DURATION = int(os.environ.get('GRAPHITE_DEFAULT_CACHE_DURATION', '60'))
+#DEFAULT_CACHE_DURATION = int(os.environ.get('GRAPHITE_DEFAULT_CACHE_DURATION', '60'))
 #DEFAULT_CACHE_POLICY = [(0, 60), # default is 60 seconds
 #                        (7200, 120), # >= 2 hour queries are cached 2 minutes
 #                        (21600, 180)] # >= 6 hour queries are cached 3 minutes
@@ -78,10 +78,10 @@ DEFAULT_CACHE_DURATION = int(os.environ.get('GRAPHITE_DEFAULT_CACHE_DURATION', '
 #MEMCACHE_OPTIONS = { 'socket_timeout': 0.5 }
 
 # this setting controls the default xFilesFactor used for query-time aggregration
-DEFAULT_XFILES_FACTOR = 0
+#DEFAULT_XFILES_FACTOR = 0
 
 # Set URL_PREFIX when deploying graphite-web to a non-root location
-URL_PREFIX = str(os.environ.get('GRAPHITE_URL_ROOT', ''))
+#URL_PREFIX = str(os.environ.get('GRAPHITE_URL_ROOT', ''))
 
 # Graphite uses Django Tagging to support tags in Events. By default each
 # tag is limited to 50 characters in length.
@@ -95,7 +95,7 @@ URL_PREFIX = str(os.environ.get('GRAPHITE_URL_ROOT', ''))
 #FETCH_TIMEOUT = 3.0  # Timeout to fetch series data
 
 # Allow UTF-8 metrics' names (can cause performance issues)
-UTF8_METRICS = os.environ.get('GRAPHITE_UTF8_METRICS', 'false').lower() in ['1', 'true', 'yes']
+#UTF8_METRICS = os.environ.get('GRAPHITE_UTF8_METRICS', 'false').lower() in ['1', 'true', 'yes']
 
 #####################################
 # Filesystem Paths #
@@ -271,7 +271,7 @@ UTF8_METRICS = os.environ.get('GRAPHITE_UTF8_METRICS', 'false').lower() in ['1',
 # metric data. Note that the first server to return a match for a query will be
 # used.
 #CLUSTER_SERVERS = ["10.0.2.2:80", "10.0.2.3:80"]
-CLUSTER_SERVERS = [x for x in [host.strip() for host in os.environ.get('GRAPHITE_CLUSTER_SERVERS', '').split(",")] if x]
+#CLUSTER_SERVERS = [x for x in [host.strip() for host in os.environ.get('GRAPHITE_CLUSTER_SERVERS', '').split(",")] if x]
 
 # Creates a pool of worker threads to which tasks can be dispatched. This makes
 # sense if there are multiple CLUSTER_SERVERS because then the communication
@@ -301,20 +301,20 @@ POOL_WORKERS = int(os.environ.get('GRAPHITE_POOL_WORKERS', '1'))
 #INTRACLUSTER_HTTPS = False
 
 # These are timeout values (in seconds) for requests to remote webapps
-REMOTE_FIND_TIMEOUT = float(os.environ.get('GRAPHITE_REMOTE_FIND_TIMEOUT', '30'))    # Timeout for metric find requests
-REMOTE_FETCH_TIMEOUT = float(os.environ.get('GRAPHITE_REMOTE_FETCH_TIMEOUT', '60'))  # Timeout to fetch series data
-REMOTE_RETRY_DELAY = float(os.environ.get('GRAPHITE_REMOTE_RETRY_DELAY', '0'))       # Time before retrying a failed remote webapp
+#REMOTE_FIND_TIMEOUT = float(os.environ.get('GRAPHITE_REMOTE_FIND_TIMEOUT', '30'))    # Timeout for metric find requests
+#REMOTE_FETCH_TIMEOUT = float(os.environ.get('GRAPHITE_REMOTE_FETCH_TIMEOUT', '60'))  # Timeout to fetch series data
+#REMOTE_RETRY_DELAY = float(os.environ.get('GRAPHITE_REMOTE_RETRY_DELAY', '0'))       # Time before retrying a failed remote webapp
 
 # Fail all requests if any remote webapp call fails
 #STORE_FAIL_ON_ERROR = False
 
 # Try to detect when a cluster server is localhost and don't forward queries
-REMOTE_EXCLUDE_LOCAL = False
+#REMOTE_EXCLUDE_LOCAL = False
 
 # Number of retries for a specific remote data fetch.
-MAX_FETCH_RETRIES = int(os.environ.get('GRAPHITE_MAX_FETCH_RETRIES', '2'))
+#MAX_FETCH_RETRIES = int(os.environ.get('GRAPHITE_MAX_FETCH_RETRIES', '2'))
 
-FIND_CACHE_DURATION = int(os.environ.get('GRAPHITE_FIND_CACHE_DURATION', '1')) # Time to cache remote metric find results
+#FIND_CACHE_DURATION = int(os.environ.get('GRAPHITE_FIND_CACHE_DURATION', '1')) # Time to cache remote metric find results
 # If the query doesn't fall entirely within the FIND_TOLERANCE window
 # we disregard the window. This prevents unnecessary remote fetches
 # caused when carbon's cache skews node.intervals, giving the appearance
@@ -324,7 +324,7 @@ FIND_CACHE_DURATION = int(os.environ.get('GRAPHITE_FIND_CACHE_DURATION', '1')) #
 #REMOTE_STORE_USE_POST = False    # Use POST instead of GET for remote requests
 
 # Size of the buffer used for streaming remote cluster responses. Set to 0 to avoid streaming deserialization.
-REMOTE_BUFFER_SIZE = int(os.environ.get('GRAPHITE_REMOTE_BUFFER_SIZE', '1048576'))
+#REMOTE_BUFFER_SIZE = int(os.environ.get('GRAPHITE_REMOTE_BUFFER_SIZE', '1048576'))
 
 # During a rebalance of a consistent hash cluster, after a partition event on a replication > 1 cluster,
 # or in other cases we might receive multiple TimeSeries data for a metric key.  Merge them together rather
@@ -340,7 +340,7 @@ REMOTE_BUFFER_SIZE = int(os.environ.get('GRAPHITE_REMOTE_BUFFER_SIZE', '1048576'
 # instead of one http request per target, per remote server.
 # Especially useful when generating graphs with more than 4-5 targets or if
 # there's significant latency between this server and the backends.
-REMOTE_PREFETCH_DATA = os.environ.get("GRAPHITE_REMOTE_PREFETCH_DATA", "false").lower() in ['1', 'true', 'yes']
+#REMOTE_PREFETCH_DATA = os.environ.get("GRAPHITE_REMOTE_PREFETCH_DATA", "false").lower() in ['1', 'true', 'yes']
 
 ## Remote rendering settings
 # Set to True to enable rendering of Graphs on a remote webapp
@@ -365,7 +365,7 @@ REMOTE_PREFETCH_DATA = os.environ.get("GRAPHITE_REMOTE_PREFETCH_DATA", "false").
 #CARBONLINK_HOSTS = ["127.0.0.1:7002:a", "127.0.0.1:7102:b", "127.0.0.1:7202:c"]
 CARBONLINK_HOSTS = [host.strip() for host in os.environ.get('GRAPHITE_CARBONLINK_HOSTS', "127.0.0.1:7002").split(",")]
 
-CARBONLINK_TIMEOUT = float(os.environ.get('GRAPHITE_CARBONLINK_TIMEOUT', '1'))
+#CARBONLINK_TIMEOUT = float(os.environ.get('GRAPHITE_CARBONLINK_TIMEOUT', '1'))
 #CARBONLINK_RETRY_DELAY = 15 # Seconds to blacklist a failed remote server
 #
 
@@ -377,7 +377,7 @@ CARBONLINK_TIMEOUT = float(os.environ.get('GRAPHITE_CARBONLINK_TIMEOUT', '1'))
 #
 # Supported values: carbon_ch, fnv1a_ch
 #
-CARBONLINK_HASHING_TYPE = os.environ.get("GRAPHITE_CARBONLINK_HASHING_TYPE", 'carbon_ch')
+#CARBONLINK_HASHING_TYPE = os.environ.get("GRAPHITE_CARBONLINK_HASHING_TYPE", 'carbon_ch')
 
 # A "keyfunc" is a user-defined python function that is given a metric name
 # and returns a string that should be used when hashing the metric name.
@@ -389,7 +389,7 @@ CARBONLINK_HASHING_TYPE = os.environ.get("GRAPHITE_CARBONLINK_HASHING_TYPE", 'ca
 
 # The replication factor to use with consistent hashing.
 # This should usually match the value configured in Carbon.
-REPLICATION_FACTOR = int(os.environ.get('GRAPHITE_REPLICATION_FACTOR', '1'))
+#REPLICATION_FACTOR = int(os.environ.get('GRAPHITE_REPLICATION_FACTOR', '1'))
 
 #####################################
 # TagDB Settings #
@@ -397,36 +397,36 @@ REPLICATION_FACTOR = int(os.environ.get('GRAPHITE_REPLICATION_FACTOR', '1'))
 # Tag Database
 
 # set TAGDB to Redis if REDIS_TAGDB env var is set
-_REDIS_TAGDB = os.environ.get('REDIS_TAGDB', 'false').lower() in ['1', 'true', 'yes']
+#_REDIS_TAGDB = os.environ.get('REDIS_TAGDB', 'false').lower() in ['1', 'true', 'yes']
 
 # default TAGDB is local database. Set to '' to disable
-TAGDB = 'graphite.tags.redis.RedisTagDB' if _REDIS_TAGDB else \
-    os.environ.get('GRAPHITE_TAGDB', 'graphite.tags.localdatabase.LocalDatabaseTagDB')
+#TAGDB = 'graphite.tags.redis.RedisTagDB' if _REDIS_TAGDB else \
+#    os.environ.get('GRAPHITE_TAGDB', 'graphite.tags.localdatabase.LocalDatabaseTagDB')
 
 # Time to cache seriesByTag results
-TAGDB_CACHE_DURATION = int(os.environ.get('GRAPHITE_TAGDB_CACHE_DURATION') or 60)
+#TAGDB_CACHE_DURATION = int(os.environ.get('GRAPHITE_TAGDB_CACHE_DURATION') or 60)
 
 # Autocomplete default result limit
-TAGDB_AUTOCOMPLETE_LIMIT = int(os.environ.get('GRAPHITE_TAGDB_AUTOCOMPLETE_LIMIT') or 100)
+#TAGDB_AUTOCOMPLETE_LIMIT = int(os.environ.get('GRAPHITE_TAGDB_AUTOCOMPLETE_LIMIT') or 100)
 
 # Settings for Redis TagDB
-TAGDB_REDIS_HOST = os.environ.get('GRAPHITE_TAGDB_REDIS_HOST', 'localhost')
-TAGDB_REDIS_PORT = int(os.environ.get('GRAPHITE_TAGDB_REDIS_PORT') or 6379)
-TAGDB_REDIS_DB = int(os.environ.get('GRAPHITE_TAGDB_REDIS_DB') or 0)
+#TAGDB_REDIS_HOST = os.environ.get('GRAPHITE_TAGDB_REDIS_HOST', 'localhost')
+#TAGDB_REDIS_PORT = int(os.environ.get('GRAPHITE_TAGDB_REDIS_PORT') or 6379)
+#TAGDB_REDIS_DB = int(os.environ.get('GRAPHITE_TAGDB_REDIS_DB') or 0)
 
 # Settings for HTTP TagDB
-TAGDB_HTTP_URL = os.environ.get('GRAPHITE_TAGDB_HTTP_URL', '')
-TAGDB_HTTP_USER = os.environ.get('GRAPHITE_TAGDB_HTTP_USER', '')
-TAGDB_HTTP_PASSWORD = os.environ.get('GRAPHITE_TAGDB_HTTP_PASSWORD', '')
+#TAGDB_HTTP_URL = os.environ.get('GRAPHITE_TAGDB_HTTP_URL', '')
+#TAGDB_HTTP_USER = os.environ.get('GRAPHITE_TAGDB_HTTP_USER', '')
+#TAGDB_HTTP_PASSWORD = os.environ.get('GRAPHITE_TAGDB_HTTP_PASSWORD', '')
 # Does the remote TagDB support autocomplete?
-TAGDB_HTTP_AUTOCOMPLETE = os.environ.get('GRAPHITE_TAGDB_HTTP_AUTOCOMPLETE', 'false').lower() in ['1', 'true', 'yes']
+#TAGDB_HTTP_AUTOCOMPLETE = os.environ.get('GRAPHITE_TAGDB_HTTP_AUTOCOMPLETE', 'false').lower() in ['1', 'true', 'yes']
 
 #####################################
 # Function plugins #
 #####################################
 # List of custom function plugin modules
 # See: http://graphite.readthedocs.io/en/latest/functions.html#function-plugins
-FUNCTION_PLUGINS = []
+#FUNCTION_PLUGINS = []
 
 #####################################
 # Additional Django Settings #
@@ -436,11 +436,11 @@ FUNCTION_PLUGINS = []
 _SECRET_KEY = '$(date +%s | sha256sum | base64 | head -c 64)'
 SECRET_KEY = os.environ.get('GRAPHITE_SECRET_KEY', _SECRET_KEY)
 
-if (os.getenv("MEMCACHE_HOST") is not None):
-    MEMCACHE_HOSTS = os.getenv("MEMCACHE_HOST").split(",")
+#if (os.getenv("MEMCACHE_HOST") is not None):
+#    MEMCACHE_HOSTS = os.getenv("MEMCACHE_HOST").split(",")
 
-if (os.getenv("DEFAULT_CACHE_DURATION") is not None):
-    DEFAULT_CACHE_DURATION = int(os.getenv("CACHE_DURATION"))
+#if (os.getenv("DEFAULT_CACHE_DURATION") is not None):
+#    DEFAULT_CACHE_DURATION = int(os.getenv("CACHE_DURATION"))
 
 #STATSD_HOST = os.environ.get('GRAPHITE_STATSD_HOST', '127.0.0.1')
 #if STATSD_HOST != '':
