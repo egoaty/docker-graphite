@@ -18,11 +18,13 @@ ARG CARBON_SRC_ROOT="/opt/src/carbon"
 
 RUN \
   apk update && \
-  apk add --no-cache curl python3 py3-pip py3-cairo py3-gunicorn libffi nginx && \
+  apk add --no-cache tzdata curl python3 py3-pip py3-cairo py3-gunicorn libffi nginx && \
   apk add --no-cache git jq python3-dev py3-cairo-dev libffi-dev gcc musl-dev openssl-dev py3-wheel &&\
   \
   \
   mkdir /run/nginx && \
+  sed -i 's/^user nginx/user graphite/' /etc/nginx/nginx.conf && \
+  \
   PYTHON_SITE_PACKAGES=$( python3 -c 'import site; print(site.getsitepackages()[0])' )  && \
   export PYTHONPATH="/opt/graphite/lib/:/opt/graphite/webapp/" && \
   \
@@ -90,6 +92,9 @@ RUN \
 COPY root/ /
 
 VOLUME ["/opt/graphite/storage"]
+
 EXPOSE 80/tcp
+EXPOSE 2003/tcp
+EXPOSE 2004/tcp
 
 CMD /run.sh
