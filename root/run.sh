@@ -6,7 +6,7 @@
 ##  PUID ... unprivileged UID
 ##  PGID ... unprivileged GID
 ##
-set -euf -o pipefail
+set -eu -o pipefail
 
 user="graphite"
 group="graphite"
