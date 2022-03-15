@@ -22,7 +22,7 @@ RUN \
   apk add --no-cache git jq python3-dev py3-cairo-dev libffi-dev gcc musl-dev openssl-dev py3-wheel &&\
   \
   \
-  mkdir /run/nginx && \
+  mkdir -p /run/nginx && \
   sed -i 's/^user nginx/user graphite/' /etc/nginx/nginx.conf && \
   \
   PYTHON_SITE_PACKAGES=$( python3 -c 'import site; print(site.getsitepackages()[0])' )  && \
