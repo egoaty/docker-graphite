@@ -31,7 +31,7 @@ $runasuser "PYTHONPATH=/opt/graphite/webapp gunicorn wsgi --workers=2 --threads=
 nginx -g 'daemon off;' &
 
 # Run carbon daemon in background
-$runasuser "/opt/graphite/bin/carbon-cache.py --debug start" &
+$runasuser "/usr/bin/python3 /opt/graphite/bin/carbon-cache.py --debug start" &
 
 set +e
 
