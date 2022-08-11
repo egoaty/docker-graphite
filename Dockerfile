@@ -21,7 +21,7 @@ RUN \
   apk add --no-cache tzdata curl python3 py3-pip py3-cairo py3-gunicorn libffi nginx && \
   apk add --no-cache git jq python3-dev py3-cairo-dev libffi-dev gcc musl-dev openssl-dev py3-wheel &&\
   \
-  ln -s /usr/bin/python3 /user/bin/python &&\
+  ln -s /usr/bin/python3 /usr/bin/python &&\
   \
   mkdir -p /run/nginx && \
   sed -i 's/^user nginx/user graphite/' /etc/nginx/nginx.conf && \
