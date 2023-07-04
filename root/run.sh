@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ##
 ## Run the daemons (carbon, graphite)
 ##
@@ -10,9 +10,10 @@ set -eu -o pipefail
 
 user="graphite"
 group="graphite"
-if ! id ${user} >/dev/null 2>&1; then 
-	addgroup -g "${PGID:=100000}" "${group}"
-	adduser -h / -H -D -G "${group}" -u "${PUID:=100000}" "${user}"
+
+if ! id ${user} >/dev/null 2>&1; then
+        groupadd -g "${PGID:=100000}" "${group}"
+        useradd -d / -M -g "${group}" -u "${PUID:=100000}" "${user}"
 fi
 
 chown -R ${user}:${group} /var/log
@@ -38,27 +39,27 @@ set +e
 _IN_TRAP=0
 # Wait for termination or any child proccess exits then stop all others and quit
 trap '
-	_term_sig=$(( $? - 128 ));
+	_term_sig=$?;
 	if [ ${_IN_TRAP} -eq 0 ]; then
-		trap - EXIT SIGTERM SIGCHLD;
-		echo "signal $( kill -l ${_term_sig} ) received!";
+		trap - EXIT SIGTERM SIGCHLD SIGINT;
+		echo "Signal ${_term_sig} $( kill -l ${_term_sig} ) received. Killing jobs (TERM)!";
 		kill $( jobs -p );
 		wait;
 		exit;
 	fi
-     ' EXIT SIGTERM SIGCHLD
+     ' EXIT SIGINT SIGTERM SIGCHLD
 
 
 # Forward other signals
 trap '
-	_fwd_sig=$(( $? - 128 ));
+	_fwd_sig=$?;
 	_IN_TRAP=1;
 	if [ ${_fwd_sig} -gt 0 ]; then
-		echo "forwarding signal $( kill -l ${_fwd_sig} )!";
+		echo "Forwarding signal $( kill -l ${_fwd_sig} )!";
 		kill -${_fwd_sig} $( jobs -p );
 	fi
 	_IN_TRAP=0;
-     ' SIGHUP SIGINT SIGQUIT SIGPIPE SIGALRM SIGUSR1 SIGUSR2 SIGTSTP SIGCONT SIGTTIN SIGTTOU SIGVTALRM SIGPROF
+     ' SIGHUP SIGQUIT SIGPIPE SIGALRM SIGUSR1 SIGUSR2 SIGTSTP SIGCONT SIGTTIN SIGTTOU SIGVTALRM SIGPROF
 
 # Keep the script running
 while true; do

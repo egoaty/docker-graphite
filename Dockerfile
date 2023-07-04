@@ -1,4 +1,4 @@
-ARG DISTRO=alpine:3
+ARG DISTRO=ubuntu
 FROM $DISTRO
 
 ENV GRAPHITE_ROOT /opt/graphite
@@ -17,9 +17,16 @@ ARG CARBON_SRC_ROOT="/opt/src/carbon"
 
 
 RUN \
-  apk -U upgrade && \
-  apk add --no-cache tzdata curl python3 py3-pip py3-cairo py3-gunicorn libffi nginx && \
-  apk add --no-cache git jq python3-dev py3-cairo-dev libffi-dev gcc musl-dev openssl-dev py3-wheel &&\
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get update && \
+  apt-get dist-upgrade -q -y && \
+  \
+  ln -fs /usr/share/zoneinfo/Europe/Vienna /etc/localtime && \
+  apt-get install -y tzdata && \
+  dpkg-reconfigure --frontend noninteractive tzdata && \
+  \
+  apt-get install -y curl python3 python3-pip python3-cairo python3-gunicorn gunicorn libffi8 nginx &&\
+  apt-get install -y git jq python3-dev python3-cairo-dev libffi-dev gcc musl-dev python-wheel-common &&\
   \
   mkdir -p /run/nginx && \
   sed -i 's/^user nginx/user graphite/' /etc/nginx/nginx.conf && \
@@ -83,9 +90,9 @@ RUN \
   \
   \
   rm -rf /opt/src && \
-  apk del --purge -r git jq python3-dev py3-cairo-dev libffi-dev gcc musl-dev openssl-dev py3-wheel && \
-  rm -rf /var/cache/apk/* && \
-  rm -rf /root/.cache
+  apt-get remove --purge -y git jq python3-dev python3-cairo-dev libffi-dev gcc musl-dev python-wheel-common &&\
+  apt-get clean -q -y --force-yes && \
+  apt-get autoclean -q -y --force-yes
 
 
 COPY root/ /
